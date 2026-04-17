@@ -8,10 +8,15 @@
 script = ExtResource("1_data")
 building_id = &"warehouse"
 display_name = "Warehouse"
-category = &"storage"
+category = &"logistics"
 scene = ExtResource("3_scene")
 preview = ExtResource("2_preview")
 size = Vector2(7, 5)
-cost_wood = 10
-cost_stone = 5
+build_costs = {
+"conductive_crystal": 2,
+"ferrite_ore": 10,
+"silicate_ore": 6
+}
+description = "Pressurized storage bay for ore, ice, and fabricated goods."
+tier = 1
 metadata/_custom_type_script = "uid://dkw5qnns4uqwh"
