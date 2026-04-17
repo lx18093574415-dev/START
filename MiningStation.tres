@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Preview/MiningStationPreview.tscn" id="1_preview"]
+[ext_resource type="PackedScene" path="res://Scenes/Buildings/MiningStation.tscn" id="2_scene"]
+[ext_resource type="Script" path="res://Scripts/Building/BuildingData.gd" id="3_data"]
+
+[resource]
+script = ExtResource("3_data")
+building_id = &"mining_station"
+display_name = "Mining Station"
+category = &"industrial"
+scene = ExtResource("2_scene")
+preview = ExtResource("1_preview")
+size = Vector2(4, 4)
+build_costs = {
+"conductive_crystal": 4,
+"ferrite_ore": 12,
+"silicate_ore": 8
+}
+description = "Automated rig for extracting ferrite and silicate seams."
+tier = 1
