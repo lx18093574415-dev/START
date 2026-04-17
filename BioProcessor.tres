@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Preview/BioProcessorPreview.tscn" id="1_preview"]
+[ext_resource type="PackedScene" path="res://Scenes/Buildings/BioProcessor.tscn" id="2_scene"]
+[ext_resource type="Script" path="res://Scripts/Building/BuildingData.gd" id="3_data"]
+
+[resource]
+script = ExtResource("3_data")
+building_id = &"bio_processor"
+display_name = "Bio Processor"
+category = &"industrial"
+scene = ExtResource("2_scene")
+preview = ExtResource("1_preview")
+size = Vector2(5, 5)
+build_costs = {
+"conductive_crystal": 4,
+"ferrite_ore": 14,
+"silicate_ore": 8
+}
+description = "Breaks alien biomass into useful colony compounds."
+tier = 2
