@@ -5,35 +5,33 @@ signal category_selected(category: StringName)
 signal building_selected(building_data: BuildingData)
 signal cancel_requested()
 
-const CATEGORY_LABELS := {
-	&"housing": "Housing",
-	&"storage": "Storage",
-	&"production": "Production",
-}
 const FALLBACK_ICON = preload("res://icon.svg")
 
-@onready var housing_button: Button = $MarginContainer/Root/CategoryRow/HousingButton
-@onready var storage_button: Button = $MarginContainer/Root/CategoryRow/StorageButton
-@onready var production_button: Button = $MarginContainer/Root/CategoryRow/ProductionButton
+@onready var category_buttons: HBoxContainer = $MarginContainer/Root/CategoryButtons
 @onready var building_list: VBoxContainer = $MarginContainer/Root/ContentScroll/BuildingList
 @onready var empty_label: Label = $MarginContainer/Root/EmptyLabel
 @onready var cancel_button: Button = $MarginContainer/Root/CancelButton
 
-var current_category: StringName = &"housing"
+var category_order: Array[StringName] = []
+var category_labels := {}
+var resource_order: Array[StringName] = []
+var resource_labels := {}
+var current_category: StringName = &"residential"
 var current_selected_id := StringName()
 var available_buildings: Array[BuildingData] = []
 var affordability := {}
 
 
 func _ready():
-	housing_button.pressed.connect(_on_category_button_pressed.bind(&"housing"))
-	storage_button.pressed.connect(_on_category_button_pressed.bind(&"storage"))
-	production_button.pressed.connect(_on_category_button_pressed.bind(&"production"))
 	cancel_button.pressed.connect(_on_cancel_button_pressed)
 	hide_menu()
 
 
-func update_state(category: StringName, buildings: Array[BuildingData], affordable_map: Dictionary, selected_id: StringName):
+func update_state(categories: Array[StringName], labels: Dictionary, costs_order: Array[StringName], cost_labels: Dictionary, category: StringName, buildings: Array[BuildingData], affordable_map: Dictionary, selected_id: StringName):
+	category_order = categories
+	category_labels = labels
+	resource_order = costs_order
+	resource_labels = cost_labels
 	current_category = category
 	available_buildings = buildings
 	affordability = affordable_map
@@ -50,7 +48,7 @@ func hide_menu():
 
 
 func _render():
-	_update_category_labels()
+	_render_categories()
 	_clear_building_list()
 
 	var buildings_in_category: Array[BuildingData] = []
@@ -65,7 +63,7 @@ func _render():
 
 	for building in buildings_in_category:
 		var button = Button.new()
-		button.custom_minimum_size = Vector2(260, 72)
+		button.custom_minimum_size = Vector2(280, 86)
 		button.alignment = HORIZONTAL_ALIGNMENT_LEFT
 		button.icon = building.icon if building.icon != null else FALLBACK_ICON
 		button.expand_icon = true
@@ -76,11 +74,31 @@ func _render():
 		building_list.add_child(button)
 
 
+func _render_categories():
+	for child in category_buttons.get_children():
+		child.queue_free()
+
+	for category in category_order:
+		var button = Button.new()
+		button.text = _format_category_text(category)
+		button.toggle_mode = true
+		button.button_pressed = category == current_category
+		button.pressed.connect(_on_category_button_pressed.bind(category))
+		category_buttons.add_child(button)
+
+
 func _format_building_text(building: BuildingData) -> String:
-	var lines = [
-		building.display_name,
-		"Wood: %d  Stone: %d" % [building.cost_wood, building.cost_stone],
-	]
+	var lines = [building.display_name]
+	if building.description != "":
+		lines.append(building.description)
+
+	var cost_parts: Array[String] = []
+	for resource_id in _sort_cost_keys(building.build_costs):
+		var amount = int(building.build_costs[resource_id])
+		var label = resource_labels.get(StringName(resource_id), str(resource_id))
+		cost_parts.append("%s %d" % [label, amount])
+
+	lines.append("Cost: %s" % ", ".join(cost_parts))
 
 	if not affordability.get(building.building_id, false):
 		lines.append("Insufficient resources")
@@ -88,17 +106,26 @@ func _format_building_text(building: BuildingData) -> String:
 	return "\n".join(lines)
 
 
-func _update_category_labels():
-	housing_button.text = _format_category_text(&"housing")
-	storage_button.text = _format_category_text(&"storage")
-	production_button.text = _format_category_text(&"production")
+func _sort_cost_keys(costs: Dictionary) -> Array:
+	var ordered_keys: Array = []
+	for resource_id in resource_order:
+		if costs.has(resource_id):
+			ordered_keys.append(resource_id)
+		elif costs.has(str(resource_id)):
+			ordered_keys.append(str(resource_id))
+
+	for resource_id in costs.keys():
+		if not ordered_keys.has(resource_id):
+			ordered_keys.append(resource_id)
+
+	return ordered_keys
 
 
 func _format_category_text(category: StringName) -> String:
+	var label = category_labels.get(category, str(category))
 	if category == current_category:
-		return "> %s" % CATEGORY_LABELS[category]
-
-	return CATEGORY_LABELS[category]
+		return "> %s" % label
+	return label
 
 
 func _clear_building_list():
