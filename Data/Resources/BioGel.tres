@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"bio_gel"
+display_name = "Bio Gel"
+category = &"advanced"
+sort_order = 130
+starter_zone_allowed = false
+danger_zone_only = true
+spawnable = false
+node_color = Color(0.3, 0.95, 0.7, 1)
+node_size = Vector2(1.4, 1.4)
+gather_time = 2.8
+min_amount = 4
+max_amount = 8
