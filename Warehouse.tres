@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://biyki6j8vyjwj"]
+
+[ext_resource type="Script" uid="uid://dkw5qnns4uqwh" path="res://Scripts/Building/BuildingData.gd" id="1_gqqnd"]
+[ext_resource type="PackedScene" uid="uid://c6x0f13a3ih0k" path="res://Scenes/Preview/WarehousePreview.tscn" id="1_ps2ji"]
+[ext_resource type="PackedScene" uid="uid://c1y02vsqsb2ev" path="res://Scenes/Buildings/Warehouse.tscn" id="2_buxma"]
+
+[resource]
+script = ExtResource("1_gqqnd")
+scene = ExtResource("2_buxma")
+preview = ExtResource("1_ps2ji")
+size = Vector2(2, 1)
+cost = 10
+metadata/_custom_type_script = "uid://dkw5qnns4uqwh"
