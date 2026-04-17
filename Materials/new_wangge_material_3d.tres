@@ -1,0 +1,65 @@
+[gd_resource type="ShaderMaterial" format=3 uid="uid://cnncp54f0yh1g"]
+
+[sub_resource type="Shader" id="Shader_72exb"]
+code = "shader_type spatial;
+render_mode unshaded, blend_mix, depth_draw_never;
+
+uniform vec3 highlight_pos;
+uniform vec2 highlight_area = vec2(1.0, 1.0);
+uniform float highlight_size = 2.0;
+uniform vec4 highlight_color : source_color = vec4(1.0, 1.0, 1.0, 0.3);
+uniform float grid_size = 1;
+uniform vec4 line_color : source_color = vec4(0.2, 1.0, 0.2, 0.5);
+uniform float line_width = 0.05;
+
+varying vec3 world_pos;
+
+
+void vertex() {
+	world_pos = (MODEL_MATRIX * vec4(VERTEX, 1.0)).xyz;
+}
+
+void fragment() {
+
+    // ✅ 用新变量，不改 world_pos
+    vec2 coord = (world_pos.xz + grid_size * 0.5) / grid_size;
+
+    vec2 grid = abs(fract(coord - 0.5) - 0.5) / fwidth(coord);
+    float line = min(grid.x, grid.y);
+    float alpha = 1.0 - smoothstep(0.0, line_width, line);
+
+    ALBEDO = line_color.rgb;
+    ALPHA = alpha * line_color.a;
+
+		// 👉 当前格子
+	vec2 cell = floor(world_pos.xz / grid_size);
+
+	// 👉 中心点（直接用，不再 round / floor）
+	vec2 center = highlight_pos.xz / grid_size;
+
+	// 👉 计算范围（完全对称）
+	vec2 half = (highlight_area - 1.0) / 2.0;
+
+	// 👉 最终范围
+	vec2 min_cell = floor(center - half);
+	vec2 max_cell = min_cell + highlight_area;
+
+	// 👉 判断
+	if (cell.x >= min_cell.x && cell.x < max_cell.x &&
+	    cell.y >= min_cell.y && cell.y < max_cell.y) {
+
+	    ALBEDO = highlight_color.rgb;
+	    ALPHA = highlight_color.a;
+	}
+}"
+
+[resource]
+render_priority = 0
+shader = SubResource("Shader_72exb")
+shader_parameter/highlight_pos = Vector3(0, 0, 0)
+shader_parameter/highlight_area = Vector2(1, 1)
+shader_parameter/highlight_size = 1.0
+shader_parameter/highlight_color = Color(1, 1, 1, 0.3)
+shader_parameter/grid_size = 1.0
+shader_parameter/line_color = Color(0.56334573, 2.5032542, 0.56334573, 0.89411765)
+shader_parameter/line_width = 0.3
