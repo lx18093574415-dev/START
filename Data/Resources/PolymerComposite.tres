@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"polymer_composite"
+display_name = "Polymer Composite"
+category = &"processed"
+sort_order = 80
+starter_zone_allowed = true
+spawnable = false
+node_color = Color(0.62, 0.64, 0.73, 1)
+node_size = Vector2(1.5, 1.5)
+gather_time = 1.5
+min_amount = 6
+max_amount = 10
