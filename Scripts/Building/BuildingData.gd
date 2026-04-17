@@ -9,5 +9,7 @@ extends Resource
 @export var scene: PackedScene
 @export var preview: PackedScene
 @export var size: Vector2
-@export var cost_wood: int
-@export var cost_stone: int
+@export var build_costs: Dictionary = {}
+@export_multiline var description := ""
+@export var tier := 1
+@export var unlocked_by: Array[StringName] = []
