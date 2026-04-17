@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"silicate_ore"
+display_name = "Silicate Ore"
+category = &"raw"
+sort_order = 20
+starter_zone_allowed = true
+spawnable = true
+spawn_weight = 3.5
+node_color = Color(0.76, 0.69, 0.5, 1)
+node_size = Vector2(1.7, 1.7)
+gather_time = 1.9
+min_amount = 16
+max_amount = 28
