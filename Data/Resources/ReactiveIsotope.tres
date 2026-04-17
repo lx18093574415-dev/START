@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"reactive_isotope"
+display_name = "Reactive Isotope"
+category = &"advanced"
+sort_order = 140
+starter_zone_allowed = false
+danger_zone_only = true
+spawnable = false
+node_color = Color(0.98, 0.58, 0.2, 1)
+node_size = Vector2(1.4, 1.4)
+gather_time = 2.8
+min_amount = 4
+max_amount = 8
