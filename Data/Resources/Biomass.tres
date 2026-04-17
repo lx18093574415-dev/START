@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"biomass"
+display_name = "Biomass"
+category = &"organic"
+sort_order = 50
+starter_zone_allowed = true
+spawnable = false
+node_color = Color(0.4, 0.7, 0.35, 1)
+node_size = Vector2(1.8, 1.8)
+gather_time = 2.0
+min_amount = 10
+max_amount = 18
