@@ -1,13 +1,17 @@
 [gd_resource type="Resource" script_class="BuildingData" format=3 uid="uid://b4dge5eqyd7x7"]
 
-[ext_resource type="PackedScene" uid="uid://cxasevinelogg" path="res://Scenes/Preview/HousePreview.tscn" id="1_r3c0j"]
-[ext_resource type="PackedScene" uid="uid://41lhu6v6wrmo" path="res://Scenes/Buildings/House.tscn" id="2_i64og"]
-[ext_resource type="Script" uid="uid://dkw5qnns4uqwh" path="res://Scripts/Building/BuildingData.gd" id="3_b3m8c"]
+[ext_resource type="PackedScene" uid="uid://cxasevinelogg" path="res://Scenes/Preview/HousePreview.tscn" id="1_preview"]
+[ext_resource type="PackedScene" uid="uid://41lhu6v6wrmo" path="res://Scenes/Buildings/House.tscn" id="2_scene"]
+[ext_resource type="Script" uid="uid://dkw5qnns4uqwh" path="res://Scripts/Building/BuildingData.gd" id="3_data"]
 
 [resource]
-script = ExtResource("3_b3m8c")
-scene = ExtResource("2_i64og")
-preview = ExtResource("1_r3c0j")
-size = Vector2(2, 1)
-cost = 10
+script = ExtResource("3_data")
+building_id = &"house"
+display_name = "House"
+category = &"housing"
+scene = ExtResource("2_scene")
+preview = ExtResource("1_preview")
+size = Vector2(5, 3)
+cost_wood = 10
+cost_stone = 0
 metadata/_custom_type_script = "uid://dkw5qnns4uqwh"
