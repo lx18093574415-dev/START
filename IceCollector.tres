@@ -1,0 +1,21 @@
+[gd_resource type="Resource" script_class="BuildingData" format=3]
+
+[ext_resource type="PackedScene" path="res://Scenes/Preview/IceCollectorPreview.tscn" id="1_preview"]
+[ext_resource type="PackedScene" path="res://Scenes/Buildings/IceCollector.tscn" id="2_scene"]
+[ext_resource type="Script" path="res://Scripts/Building/BuildingData.gd" id="3_data"]
+
+[resource]
+script = ExtResource("3_data")
+building_id = &"ice_collector"
+display_name = "Ice Collector"
+category = &"industrial"
+scene = ExtResource("2_scene")
+preview = ExtResource("1_preview")
+size = Vector2(3, 3)
+build_costs = {
+"conductive_crystal": 2,
+"ferrite_ore": 8,
+"silicate_ore": 4
+}
+description = "Cryo harvester that fractures and stores glacial ice."
+tier = 1
