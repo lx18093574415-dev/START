@@ -1,0 +1,7 @@
+[gd_resource type="Resource" script_class="MapDefinition" format=3 uid="uid://cvky2vb62237c"]
+
+[ext_resource type="Script" uid="uid://peoq8eo6iqn" path="res://Scripts/World/MapDefinition.gd" id="1_map_definition"]
+
+[resource]
+script = ExtResource("1_map_definition")
+visible_chunk_radius = 2
