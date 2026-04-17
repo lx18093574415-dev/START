@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"glacial_ice"
+display_name = "Glacial Ice"
+category = &"raw"
+sort_order = 40
+starter_zone_allowed = true
+spawnable = true
+spawn_weight = 3.0
+node_color = Color(0.7, 0.9, 1, 1)
+node_size = Vector2(2.0, 2.0)
+gather_time = 2.0
+min_amount = 14
+max_amount = 26
