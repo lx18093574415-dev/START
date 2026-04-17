@@ -60,17 +60,11 @@ func _physics_process(delta):
 
 				if gather_timer >= target_resource.gather_time:
 					gather_timer = 0.0
-
-					var amount = min(gather_rate, target_resource.current_amount)
-					target_resource.current_amount -= amount
-
-					if target_resource.resource_type == "wood":
-						gm.add_wood(amount)
-					elif target_resource.resource_type == "stone":
-						gm.add_stone(amount)
+					var gathered = target_resource.gather(gather_rate)
+					if gathered > 0:
+						gm.add_resource(target_resource.resource_id, gathered)
 
 					if target_resource.current_amount <= 0:
-						target_resource.queue_free()
 						target_resource = null
 						has_target = false
 
