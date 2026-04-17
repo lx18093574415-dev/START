@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://c6x0f13a3ih0k"]
 
-[ext_resource type="Script" uid="uid://b2vmwaksiinnk" path="res://Scripts/Building/warehouse_preview.gd" id="1_pov6s"]
+[ext_resource type="Script" path="res://Scripts/Building/build_preview.gd" id="1_pov6s"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pov6s"]
 transparency = 1
@@ -12,21 +12,33 @@ transparency = 1
 [sub_resource type="BoxMesh" id="BoxMesh_g0t6i"]
 material = SubResource("StandardMaterial3D_qmugl")
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_highlight"]
+transparency = 1
+albedo_color = Color(0, 1, 0, 0.35)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_highlight"]
+size = Vector2(7, 5)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_r2gmc"]
 
 [node name="WarehousePreview" type="Node3D" unique_id=4464907]
 script = ExtResource("1_pov6s")
 
 [node name="jidipreview" type="MeshInstance3D" parent="." unique_id=1937674311]
-transform = Transform3D(7, 0, 0, 0, 2, 0, 0, 0, 5, 0, 0.5, 0)
+transform = Transform3D(7, 0, 0, 0, 2, 0, 0, 0, 5, 0, 1, 0)
 material_override = SubResource("StandardMaterial3D_pov6s")
 material_overlay = SubResource("StandardMaterial3D_pov6s")
 mesh = SubResource("BoxMesh_g0t6i")
+
+[node name="Highlight" type="MeshInstance3D" parent="." unique_id=2103770412]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.03, 0)
+material_override = SubResource("StandardMaterial3D_highlight")
+mesh = SubResource("PlaneMesh_highlight")
 
 [node name="BuildCheck" type="Area3D" parent="." unique_id=1146885853]
 collision_layer = 2
 collision_mask = 2
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BuildCheck" unique_id=126963491]
-transform = Transform3D(7, 0, 0, 0, 2, 0, 0, 0, 5, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("BoxShape3D_r2gmc")
