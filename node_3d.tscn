@@ -10,8 +10,14 @@
 [ext_resource type="Resource" uid="uid://b4dge5eqyd7x7" path="res://House.tres" id="8_house_data"]
 [ext_resource type="Material" uid="uid://cnncp54f0yh1g" path="res://Materials/new_wangge_material_3d.tres" id="9_grid_material"]
 [ext_resource type="Resource" uid="uid://biyki6j8vyjwj" path="res://Warehouse.tres" id="10_warehouse_data"]
-[ext_resource type="Script" uid="uid://en8hu5ataerq" path="res://Scripts/Resource/tree.gd" id="11_tree"]
-[ext_resource type="Script" uid="uid://mc5e8ld6sam0" path="res://Scripts/Resource/stone.gd" id="12_stone"]
+[ext_resource type="Resource" path="res://MiningStation.tres" id="13_mining_station"]
+[ext_resource type="Resource" path="res://IceCollector.tres" id="14_ice_collector"]
+[ext_resource type="Resource" path="res://Refinery.tres" id="15_refinery"]
+[ext_resource type="Resource" path="res://WaterTreatment.tres" id="16_water_treatment"]
+[ext_resource type="Resource" path="res://BioProcessor.tres" id="17_bio_processor"]
+[ext_resource type="Resource" path="res://WarFactory.tres" id="18_war_factory"]
+[ext_resource type="Script" uid="uid://5l6obbrkoixq" path="res://Scripts/World/map_resource_system.gd" id="19_map_resource_system"]
+[ext_resource type="Script" uid="uid://b30tvehga0jqw" path="res://Scripts/World/save_system.gd" id="20_save_system"]
 
 [sub_resource type="Environment" id="Environment_jka67"]
 ambient_light_source = 2
@@ -26,17 +32,15 @@ ambient_light_energy = 0.6
 albedo_color = Color(0.63, 0.61698, 0.2394, 1)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_noarx"]
+size = Vector2(200, 200)
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_noarx"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_a0tk4"]
-size = Vector3(50, 1, 50)
+size = Vector3(200, 1, 200)
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_jka67"]
-
-[sub_resource type="BoxMesh" id="BoxMesh_noarx"]
-
-[sub_resource type="BoxShape3D" id="BoxShape3D_r3fl7"]
+size = Vector2(200, 200)
 
 [node name="Main" type="Node3D" unique_id=1507301231]
 
@@ -59,12 +63,12 @@ shape = SubResource("CapsuleShape3D_r3fl7")
 mesh = SubResource("CapsuleMesh_jka67")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1729796869 node_paths=PackedStringArray("target")]
-transform = Transform3D(0.7071068, -0.5, 0.5, 0, 0.7071068, 0.70710677, -0.7071068, -0.5, 0.5, 10, 11.582369, 10)
+transform = Transform3D(0.7071068, -0.5577451, 0.43388376, 0, 0.61374575, 0.78950375, -0.7071068, -0.5577451, 0.43388376, -15.556349, 19, 15.556349)
+fov = 42.0
 script = ExtResource("2_camera")
 target = NodePath("../Player")
 
 [node name="Ground" type="Node3D" parent="." unique_id=281966448]
-transform = Transform3D(50, 0, 0, 0, 1, 0, 0, 0, 50, 0, 0, 0)
 
 [node name="Ground_Main" type="MeshInstance3D" parent="Ground" unique_id=72217828]
 material_override = SubResource("StandardMaterial3D_i5arm")
@@ -84,25 +88,22 @@ mesh = SubResource("PlaneMesh_jka67")
 
 [node name="Buildings" type="Node3D" parent="." unique_id=266746687]
 
+[node name="WorldResources" type="Node3D" parent="." unique_id=844211337]
+
 [node name="UI" type="CanvasLayer" parent="." unique_id=1441267746]
 script = ExtResource("4_hud")
 
-[node name="Label" type="Label" parent="UI" unique_id=1261894539]
-offset_right = 120.0
-offset_bottom = 23.0
-text = "Wood: 0"
-
-[node name="Label2" type="Label" parent="UI" unique_id=561569872]
-offset_top = 24.0
-offset_right = 120.0
-offset_bottom = 47.0
-text = "Stone: 0"
+[node name="ResourceList" type="VBoxContainer" parent="UI" unique_id=1261894539]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 260.0
+offset_bottom = 180.0
 
 [node name="BuildButton" type="Button" parent="UI" unique_id=1005885223]
 offset_left = 8.0
-offset_top = 64.0
+offset_top = 192.0
 offset_right = 88.0
-offset_bottom = 96.0
+offset_bottom = 224.0
 text = "Build"
 
 [node name="BuildMenu" parent="UI" unique_id=1610709304 instance=ExtResource("6_build_menu")]
@@ -112,36 +113,12 @@ script = ExtResource("7_game_manager")
 
 [node name="BuildSystem" type="Node" parent="." unique_id=1507301232]
 script = ExtResource("5_build_system")
-buildings = Array[ExtResource("3_building_data")]([ExtResource("8_house_data"), ExtResource("10_warehouse_data")])
+buildings = Array[ExtResource("3_building_data")]([ExtResource("8_house_data"), ExtResource("10_warehouse_data"), ExtResource("13_mining_station"), ExtResource("14_ice_collector"), ExtResource("15_refinery"), ExtResource("16_water_treatment"), ExtResource("17_bio_processor"), ExtResource("18_war_factory")])
 
-[node name="tree" type="Node3D" parent="." unique_id=580232921 groups=["tree"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.43648, 0, 0)
-script = ExtResource("11_tree")
+[node name="MapResourceSystem" type="Node3D" parent="." unique_id=1619918380]
+script = ExtResource("19_map_resource_system")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="tree" unique_id=93284757]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5699742, 0)
-mesh = SubResource("BoxMesh_noarx")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="tree" unique_id=1572869567]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5624739, 0)
-collision_layer = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="tree/StaticBody3D" unique_id=2105980501]
-shape = SubResource("BoxShape3D_r3fl7")
-
-[node name="stone" type="Node3D" parent="." unique_id=315387424 groups=["stone"]]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.731529, 0, 0)
-script = ExtResource("12_stone")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="stone" unique_id=149903396]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5699742, 0)
-mesh = SubResource("BoxMesh_noarx")
-
-[node name="StaticBody3D" type="StaticBody3D" parent="stone" unique_id=1891180899]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5690204, 0)
-collision_layer = 2
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="stone/StaticBody3D" unique_id=172052820]
-shape = SubResource("BoxShape3D_r3fl7")
+[node name="SaveSystem" type="Node" parent="." unique_id=540122117]
+script = ExtResource("20_save_system")
 
 [connection signal="pressed" from="UI/BuildButton" to="BuildSystem" method="_on_build_button_pressed"]
