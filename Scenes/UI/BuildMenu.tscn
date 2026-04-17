@@ -1,0 +1,47 @@
+[gd_scene load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://Scripts/UI/build_menu.gd" id="1_build_menu"]
+
+[node name="BuildMenu" type="PanelContainer"]
+visible = false
+offset_left = 12.0
+offset_top = 108.0
+offset_right = 320.0
+offset_bottom = 520.0
+script = ExtResource("1_build_menu")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 12
+
+[node name="Root" type="VBoxContainer" parent="MarginContainer"]
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/Root"]
+text = "Build Menu"
+
+[node name="CategoryRow" type="HBoxContainer" parent="MarginContainer/Root"]
+
+[node name="HousingButton" type="Button" parent="MarginContainer/Root/CategoryRow"]
+text = "Housing"
+
+[node name="StorageButton" type="Button" parent="MarginContainer/Root/CategoryRow"]
+text = "Storage"
+
+[node name="ProductionButton" type="Button" parent="MarginContainer/Root/CategoryRow"]
+text = "Production"
+
+[node name="ContentScroll" type="ScrollContainer" parent="MarginContainer/Root"]
+custom_minimum_size = Vector2(0, 260)
+size_flags_vertical = 3
+
+[node name="BuildingList" type="VBoxContainer" parent="MarginContainer/Root/ContentScroll"]
+size_flags_horizontal = 3
+
+[node name="EmptyLabel" type="Label" parent="MarginContainer/Root"]
+visible = false
+text = "No buildings available."
+
+[node name="CancelButton" type="Button" parent="MarginContainer/Root"]
+text = "Cancel Build"
