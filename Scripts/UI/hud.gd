@@ -1,17 +1,21 @@
 extends CanvasLayer
 
-@onready var wood_label: Label = $Label
-@onready var stone_label: Label = $Label2
 @onready var build_button: Button = $BuildButton
+@onready var resource_list: VBoxContainer = $ResourceList
 @onready var gm = get_node("../GameManager")
 
 
 func _ready():
 	build_button.text = "Build"
-	gm.resources_changed.connect(_on_resources_changed)
-	_on_resources_changed(gm.wood, gm.stone)
+	gm.resources_changed.connect(_refresh_resources)
+	_refresh_resources()
 
 
-func _on_resources_changed(wood: int, stone: int):
-	wood_label.text = "Wood: %d" % wood
-	stone_label.text = "Stone: %d" % stone
+func _refresh_resources():
+	for child in resource_list.get_children():
+		child.queue_free()
+
+	for resource_def in gm.get_visible_resources():
+		var label = Label.new()
+		label.text = "%s: %d" % [resource_def.display_name, gm.get_resource_amount(resource_def.resource_id)]
+		resource_list.add_child(label)
