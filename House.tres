@@ -8,10 +8,15 @@
 script = ExtResource("3_data")
 building_id = &"house"
 display_name = "House"
-category = &"housing"
+category = &"residential"
 scene = ExtResource("2_scene")
 preview = ExtResource("1_preview")
 size = Vector2(5, 3)
-cost_wood = 10
-cost_stone = 0
+build_costs = {
+"ferrite_ore": 8,
+"glacial_ice": 2,
+"silicate_ore": 4
+}
+description = "Starter habitat pod for newly landed colonists."
+tier = 1
 metadata/_custom_type_script = "uid://dkw5qnns4uqwh"
