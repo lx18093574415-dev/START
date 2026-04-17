@@ -1,0 +1,18 @@
+[gd_resource type="Resource" script_class="ResourceData" format=3]
+
+[ext_resource type="Script" path="res://Scripts/Resource/ResourceData.gd" id="1_resource_data"]
+
+[resource]
+script = ExtResource("1_resource_data")
+resource_id = &"ferrite_ore"
+display_name = "Ferrite Ore"
+category = &"raw"
+sort_order = 10
+starter_zone_allowed = true
+spawnable = true
+spawn_weight = 4.0
+node_color = Color(0.58, 0.58, 0.62, 1)
+node_size = Vector2(1.8, 1.8)
+gather_time = 1.8
+min_amount = 18
+max_amount = 32
