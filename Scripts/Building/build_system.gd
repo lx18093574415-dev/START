@@ -1,7 +1,15 @@
 class_name BuildSystem
 extends Node
 
-const DEFAULT_CATEGORY := &"housing"
+signal building_placed(building_id: StringName, position: Vector3, rotation_y: float)
+
+const CATEGORY_ORDER: Array[StringName] = [&"residential", &"logistics", &"industrial", &"military"]
+const CATEGORY_LABELS := {
+	&"residential": "Residential",
+	&"logistics": "Logistics",
+	&"industrial": "Industrial",
+	&"military": "Military",
+}
 
 @export var grid_size := 1.0
 @export var buildings: Array[BuildingData]
@@ -13,7 +21,7 @@ const DEFAULT_CATEGORY := &"housing"
 @onready var buildings_root: Node3D = get_node("../Buildings")
 
 var is_build_mode := false
-var current_category: StringName = DEFAULT_CATEGORY
+var current_category: StringName = CATEGORY_ORDER[0]
 var current_building: BuildingData
 var current_preview: BuildPreview
 var build_rotation := 0.0
@@ -82,7 +90,7 @@ func _on_build_button_pressed():
 
 func enter_build_mode():
 	is_build_mode = true
-	current_category = DEFAULT_CATEGORY
+	current_category = CATEGORY_ORDER[0]
 	current_building = null
 	build_rotation = 0.0
 	current_build_transform.clear()
@@ -94,7 +102,7 @@ func enter_build_mode():
 
 func exit_build_mode():
 	is_build_mode = false
-	current_category = DEFAULT_CATEGORY
+	current_category = CATEGORY_ORDER[0]
 	current_building = null
 	build_rotation = 0.0
 	current_build_transform.clear()
@@ -124,16 +132,31 @@ func request_place_building(building_data: BuildingData, build_transform: Dictio
 	if not placement_state.can_place:
 		return false
 
-	if not gm.spend_build_cost(building_data):
+	if not gm.spend_resources(building_data.build_costs):
 		return false
 
-	var building = building_data.scene.instantiate()
-	buildings_root.add_child(building)
-	building.global_position = build_transform.position
-	building.rotation.y = build_transform.rotation_y
+	var building = _instantiate_building(building_data, build_transform.position, build_transform.rotation_y)
+	if building == null:
+		return false
 
+	building_placed.emit(building_data.building_id, build_transform.position, build_transform.rotation_y)
 	exit_build_mode()
 	return true
+
+
+func spawn_saved_building(building_id: StringName, position: Vector3, rotation_y: float):
+	var building_data = get_building_by_id(building_id)
+	if building_data == null:
+		return
+
+	_instantiate_building(building_data, position, rotation_y)
+
+
+func get_building_by_id(building_id: StringName) -> BuildingData:
+	for building in buildings:
+		if building.building_id == building_id:
+			return building
+	return null
 
 
 func get_mouse_result() -> Dictionary:
@@ -164,15 +187,24 @@ func _setup_grid():
 
 
 func _refresh_build_menu():
-	var affordable_map = {}
+	var affordable_map := {}
 	for building in buildings:
-		affordable_map[building.building_id] = gm.has_build_cost(building)
+		affordable_map[building.building_id] = gm.has_resources(building.build_costs)
 
 	var selected_id := StringName()
 	if current_building != null:
 		selected_id = current_building.building_id
 
-	build_menu.update_state(current_category, buildings, affordable_map, selected_id)
+	build_menu.update_state(
+		CATEGORY_ORDER,
+		CATEGORY_LABELS,
+		gm.get_resource_order(),
+		gm.get_resource_labels(),
+		current_category,
+		buildings,
+		affordable_map,
+		selected_id
+	)
 
 
 func _on_category_selected(category: StringName):
@@ -196,7 +228,7 @@ func _on_cancel_requested():
 	exit_build_mode()
 
 
-func _on_resources_changed(_wood: int, _stone: int):
+func _on_resources_changed():
 	_refresh_build_menu()
 
 
@@ -249,7 +281,7 @@ func _get_placement_state(building_data: BuildingData, build_transform: Dictiona
 		}
 
 	_apply_preview_transform(build_transform)
-	var has_enough_resources = gm.has_build_cost(building_data)
+	var has_enough_resources = gm.has_resources(building_data.build_costs)
 	var is_area_free = current_preview.is_area_free()
 
 	return {
@@ -257,6 +289,18 @@ func _get_placement_state(building_data: BuildingData, build_transform: Dictiona
 		"is_area_free": is_area_free,
 		"can_place": has_enough_resources and is_area_free,
 	}
+
+
+func _instantiate_building(building_data: BuildingData, position: Vector3, rotation_y: float) -> Node3D:
+	var building = building_data.scene.instantiate()
+	if building == null:
+		return null
+
+	building.set_meta("building_id", building_data.building_id)
+	buildings_root.add_child(building)
+	building.global_position = position
+	building.rotation.y = rotation_y
+	return building
 
 
 func _get_world_footprint(size: Vector2, rotation_y: float) -> Vector2:
