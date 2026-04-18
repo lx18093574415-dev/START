@@ -7,15 +7,17 @@
 [resource]
 script = ExtResource("3_data")
 building_id = &"mining_station"
-display_name = "Mining Station"
+display_name = "采矿站"
 category = &"industrial"
 scene = ExtResource("2_scene")
 preview = ExtResource("1_preview")
 size = Vector2(4, 4)
+preview_range_radius = 8.0
+preview_range_color = Color(1, 0.72, 0.24, 0.3)
 build_costs = {
 "conductive_crystal": 4,
 "ferrite_ore": 12,
 "silicate_ore": 8
 }
-description = "Automated rig for extracting ferrite and silicate seams."
+description = "自动采集铁素矿和硅酸盐矿的开采设施。"
 tier = 1
