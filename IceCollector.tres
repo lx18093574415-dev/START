@@ -7,15 +7,17 @@
 [resource]
 script = ExtResource("3_data")
 building_id = &"ice_collector"
-display_name = "Ice Collector"
+display_name = "冰采集器"
 category = &"industrial"
 scene = ExtResource("2_scene")
 preview = ExtResource("1_preview")
 size = Vector2(3, 3)
+preview_range_radius = 8.0
+preview_range_color = Color(0.38, 0.78, 1, 0.3)
 build_costs = {
 "conductive_crystal": 2,
 "ferrite_ore": 8,
 "silicate_ore": 4
 }
-description = "Cryo harvester that fractures and stores glacial ice."
+description = "用于破碎并收集晶化冰的低温采集装置。"
 tier = 1
