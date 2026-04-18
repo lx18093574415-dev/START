@@ -9,6 +9,8 @@ extends Resource
 @export var scene: PackedScene
 @export var preview: PackedScene
 @export var size: Vector2
+@export var preview_range_radius := 0.0
+@export var preview_range_color := Color(1.0, 0.75, 0.25, 0.3)
 @export var build_costs: Dictionary = {}
 @export_multiline var description := ""
 @export var tier := 1
